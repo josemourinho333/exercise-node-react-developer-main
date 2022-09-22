@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import axiosRetry from 'axios-retry';
 import './App.css';
 import RepoList from './components/RepoList';
 import LangList from './components/LangList';
@@ -8,6 +7,7 @@ import RepoPage from './components/RepoPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 export function App() {
+  const [tries, setTries] = useState(0);
   const [sortBy, setSortBy] = useState<string>('');
   const [state, setState] = useState<any[]>();
   const langsList = useMemo(() => {
@@ -19,19 +19,31 @@ export function App() {
     return uniqueList;
   }, [state]);
 
-  axiosRetry(axios, { retries: 4 });
-
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}`)
-      .then((res) => {
-        setState(res.data);
-      })
-      .catch((err) => {
-        /* eslint-disable-next-line no-console */
-        console.log('err', err);
-      });
-  }, []);
+    const fetchData = async () => {
+      while (true) {
+        try {
+          const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+          setState(res.data);
+          setTries(0);
+          break;
+        } catch (err) {
+          setTries(tries + 1);
+          /* eslint-disable-next-line no-console */
+          console.log('err', err);
+          /* eslint-disable-next-line no-console */
+          console.log('Failed attempt:', tries);
+          if (tries > 4) {
+            /* eslint-disable-next-line no-console */
+            console.log('Maximum retry reached. Exiting');
+            break;
+          }
+        }
+      }
+    };
+
+    fetchData();
+  }, [tries]);
 
   const sortByLang = (lang: string | number) => {
     if (lang === 'All') {
