@@ -2,6 +2,8 @@ import { Router, Request, Response } from 'express';
 import localData from '../../data/repos.json';
 import axios from 'axios';
 import { config as dotenv } from 'dotenv-flow';
+import { Repo } from '../models/Repo';
+import { AppError } from '../models/AppError';
 
 dotenv({ default_node_env: 'development', path: `${__dirname}/../../` });
 
@@ -17,16 +19,18 @@ repos.get('/', async (_: Request, res: Response) => {
     .get(`${process.env.API_URL}`)
     .then((response) => {
       const allData = [...localData, ...response.data];
-      const filtered = allData.filter((data) => data.fork === false);
-      return res.json(filtered);
+      const filtered: Repo[] = allData.filter((data) => data.fork === false);
+      return res.json({
+        success: true,
+        data: {
+          repos: filtered,
+        },
+      });
     })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log('Error Code:', err.response.status);
-      // eslint-disable-next-line no-console
-      console.log(
-        'Error Message:',
-        `Path (${err.response.request.path}) ${err.response.statusText}`
-      );
+    .catch((err: AppError) => {
+      return res.json({
+        success: false,
+        error: err.message,
+      });
     });
 });
