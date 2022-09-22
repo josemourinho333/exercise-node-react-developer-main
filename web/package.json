@@ -2,6 +2,7 @@
   "name": "silverorange-js-dev-test-web",
   "version": "0.1.0",
   "private": true,
+  "proxy" : "https://localhost:4000/repos",
   "browserslist": {
     "production": [
       ">0.2%",
