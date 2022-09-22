@@ -23,7 +23,7 @@ const repoCard = ({
   sortByLang,
 }: Props) => {
   return (
-    <Link to={`/repos/${id}`}>
+    <Link to={`/repos/${id}/${name}`}>
       <div className="card w-96 bg-primary text-primary-content my-2">
         <div className="card-body items-start">
           <h2 className="card-title">{name}</h2>
