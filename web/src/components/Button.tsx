@@ -4,11 +4,17 @@ interface Props {
   active: boolean;
   title?: string;
   content: string | number;
+  sortByLang?: (lang: string | number) => void;
 }
 
-const button = ({ active, title, content }: Props) => {
+const button = ({ active, title, content, sortByLang }: Props) => {
   return (
     <button
+      onClick={() => {
+        if (active) {
+          sortByLang?.(content);
+        }
+      }}
       className={`m-1 btn btn-sm ${
         active
           ? 'btn-active btn-primary'

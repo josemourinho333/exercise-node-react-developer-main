@@ -30,9 +30,13 @@ export function App() {
       });
   }, []);
 
+  const sortByLang = (lang: string | number) => {
+    console.log('clicking lang button', lang);
+  };
+
   return (
-    <div className="App">
-      <LangList langsList={langsList} />
+    <div className="App flex flex-col items-center my-5">
+      <LangList langsList={langsList} sortByLang={sortByLang} />
       <RepoList repos={state} />
     </div>
   );
