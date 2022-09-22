@@ -42,25 +42,30 @@ export function App() {
   };
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/">
-          <Route
-            path=""
-            element={
-              <div className="App flex flex-col items-center my-5">
-                <LangList langsList={langsList} sortByLang={sortByLang} />
-                <RepoList
-                  repos={state}
-                  sortBy={sortBy}
-                  sortByLang={sortByLang}
-                />
-              </div>
-            }
-          />
-          <Route path="/repos/:id" element={<RepoPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <div className="App flex flex-col items-center my-5">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+            <Route
+              path=""
+              element={
+                <>
+                  <LangList langsList={langsList} sortByLang={sortByLang} />
+                  <RepoList
+                    repos={state}
+                    sortBy={sortBy}
+                    sortByLang={sortByLang}
+                  />
+                </>
+              }
+            />
+            <Route
+              path="/repos/:id/:name"
+              element={<RepoPage repos={state} />}
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
