@@ -20,17 +20,9 @@ repos.get('/', async (_: Request, res: Response) => {
     .then((response) => {
       const allData = [...localData, ...response.data];
       const filtered: Repo[] = allData.filter((data) => data.fork === false);
-      return res.json({
-        success: true,
-        data: {
-          repos: filtered,
-        },
-      });
+      return res.json(filtered);
     })
     .catch((err: AppError) => {
-      return res.json({
-        success: false,
-        error: err.message,
-      });
+      return res.json(err);
     });
 });
