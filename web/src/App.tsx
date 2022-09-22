@@ -4,6 +4,8 @@ import axiosRetry from 'axios-retry';
 import './App.css';
 import RepoList from './components/RepoList';
 import LangList from './components/LangList';
+import RepoPage from './components/RepoPage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 export function App() {
   const [sortBy, setSortBy] = useState<string>('');
@@ -40,9 +42,25 @@ export function App() {
   };
 
   return (
-    <div className="App flex flex-col items-center my-5">
-      <LangList langsList={langsList} sortByLang={sortByLang} />
-      <RepoList repos={state} sortBy={sortBy} sortByLang={sortByLang} />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/">
+          <Route
+            path=""
+            element={
+              <div className="App flex flex-col items-center my-5">
+                <LangList langsList={langsList} sortByLang={sortByLang} />
+                <RepoList
+                  repos={state}
+                  sortBy={sortBy}
+                  sortByLang={sortByLang}
+                />
+              </div>
+            }
+          />
+          <Route path="/repos/:id" element={<RepoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }

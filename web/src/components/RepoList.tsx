@@ -22,6 +22,7 @@ const repoList = ({ repos, sortBy, sortByLang }: Props) => {
       return (
         <RepoCard
           key={`${repo.id}-${index}`}
+          id={repo.id}
           name={repo.name}
           desc={repo.description}
           lang={repo.language}
