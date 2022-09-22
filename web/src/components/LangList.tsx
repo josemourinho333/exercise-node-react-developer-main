@@ -20,7 +20,12 @@ const langList = ({ langsList, sortByLang }: Props) => {
     );
   });
 
-  return <div className="langs-container">{languages}</div>;
+  return (
+    <div className="langs-container">
+      <Button active={true} content="All" sortByLang={sortByLang} />
+      {languages}
+    </div>
+  );
 };
 
 export default langList;

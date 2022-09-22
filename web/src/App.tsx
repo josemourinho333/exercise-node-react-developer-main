@@ -6,6 +6,7 @@ import RepoList from './components/RepoList';
 import LangList from './components/LangList';
 
 export function App() {
+  const [sortBy, setSortBy] = useState<string>('');
   const [state, setState] = useState<any[]>();
   const langsList = useMemo(() => {
     const langs = state?.map((repo: Record<string, never>) => {
@@ -31,13 +32,17 @@ export function App() {
   }, []);
 
   const sortByLang = (lang: string | number) => {
-    console.log('clicking lang button', lang);
+    if (lang === 'All') {
+      setSortBy('');
+    } else {
+      setSortBy(lang.toString());
+    }
   };
 
   return (
     <div className="App flex flex-col items-center my-5">
       <LangList langsList={langsList} sortByLang={sortByLang} />
-      <RepoList repos={state} />
+      <RepoList repos={state} sortBy={sortBy} />
     </div>
   );
 }
