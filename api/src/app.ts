@@ -8,6 +8,8 @@ import { AppError } from './models/AppError';
 const corsOptions = {
   methods: 'GET',
   allowedHeaders: 'Content-Type,Authorization',
+  origin: '*',
+  credentials: true,
 };
 
 export const app = express();

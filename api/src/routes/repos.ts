@@ -23,6 +23,8 @@ repos.get('/', async (_: Request, res: Response) => {
       return res.json(filtered);
     })
     .catch((err: AppError) => {
+      /* eslint-disable-next-line no-console */
+      console.log('err', err);
       return res.json(err);
     });
 });
