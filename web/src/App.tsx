@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import './App.css';
 import RepoList from './components/RepoList';
+import LangList from './components/LangList';
 
 export function App() {
-  const [state, setState] = useState();
-  const [error, setError] = useState(null);
+  const [state, setState] = useState<any[]>();
+  const langsList = useMemo(() => {
+    const langs = state?.map((repo: Record<string, never>) => {
+      return repo?.language;
+    });
 
-  if (error) {
-    throw error;
-  }
+    const uniqueList = Array.from(new Set(langs));
+    return uniqueList;
+  }, [state]);
+
+  axiosRetry(axios, { retries: 4 });
 
   useEffect(() => {
     axios
@@ -18,19 +25,15 @@ export function App() {
         setState(res.data);
       })
       .catch((err) => {
-        setError(err);
+        /* eslint-disable-next-line no-console */
+        console.log('err', err);
       });
   }, []);
 
   return (
     <div className="App">
-      {error ? (
-        <h1 className="text-3xl font-bold underline text-red-500">
-          Try refreshing
-        </h1>
-      ) : (
-        <RepoList repos={state} />
-      )}
+      <LangList langsList={langsList} />
+      <RepoList repos={state} />
     </div>
   );
 }

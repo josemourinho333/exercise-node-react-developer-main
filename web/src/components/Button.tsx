@@ -9,8 +9,10 @@ interface Props {
 const button = ({ active, title, content }: Props) => {
   return (
     <button
-      className={`btn btn-sm ${
-        active ? 'btn-active' : 'btn-active btn-ghost cursor-default'
+      className={`m-1 btn btn-sm ${
+        active
+          ? 'btn-active btn-primary'
+          : 'btn-active btn-ghost cursor-default'
       }`}
     >
       {title ? title : ''}
