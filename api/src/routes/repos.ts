@@ -1,6 +1,9 @@
 import { Router, Request, Response } from 'express';
 import localData from '../../data/repos.json';
 import axios from 'axios';
+import { config as dotenv } from 'dotenv-flow';
+
+dotenv({ default_node_env: 'development', path: `${__dirname}/../../` });
 
 export const repos = Router();
 
@@ -9,12 +12,13 @@ repos.get('/', async (_: Request, res: Response) => {
 
   res.status(200);
 
-  // console.log('hello', localData);
   // TODO: See README.md Task (A). Return repo data here. You’ve got this!
   axios
-    .get('https://api.github.com/users/silverorange/repos/44')
+    .get(`${process.env.API_URL}`)
     .then((response) => {
-      response.data;
+      const allData = [...localData, ...response.data];
+      const filtered = allData.filter((data) => data.fork === false);
+      return res.json(filtered);
     })
     .catch((err) => {
       // eslint-disable-next-line no-console
@@ -25,5 +29,4 @@ repos.get('/', async (_: Request, res: Response) => {
         `Path (${err.response.request.path}) ${err.response.statusText}`
       );
     });
-  res.json([]);
 });
