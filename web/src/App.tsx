@@ -42,7 +42,7 @@ export function App() {
   return (
     <div className="App flex flex-col items-center my-5">
       <LangList langsList={langsList} sortByLang={sortByLang} />
-      <RepoList repos={state} sortBy={sortBy} />
+      <RepoList repos={state} sortBy={sortBy} sortByLang={sortByLang} />
     </div>
   );
 }

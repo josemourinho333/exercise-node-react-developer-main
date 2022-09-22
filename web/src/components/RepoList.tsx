@@ -4,9 +4,10 @@ import RepoCard from './RepoCard';
 interface Props {
   repos: any[] | undefined;
   sortBy: string;
+  sortByLang: (lang: string | number) => void;
 }
 
-const repoList = ({ repos, sortBy }: Props) => {
+const repoList = ({ repos, sortBy, sortByLang }: Props) => {
   const repoCards = repos
     ?.filter((repo) => {
       if (!sortBy) {
@@ -22,6 +23,8 @@ const repoList = ({ repos, sortBy }: Props) => {
           desc={repo.description}
           lang={repo.language}
           forksCount={repo.forks_count}
+          creationDate={repo.created_at}
+          sortByLang={sortByLang}
         />
       );
     });
