@@ -6,10 +6,10 @@ interface Props {
 }
 
 const repoList = ({ repos }: Props) => {
-  const repoCards = repos?.map((repo) => {
+  const repoCards = repos?.map((repo, index) => {
     return (
       <RepoCard
-        key={repo.id}
+        key={`${repo.id}-${index}`}
         name={repo.name}
         desc={repo.description}
         lang={repo.language}
