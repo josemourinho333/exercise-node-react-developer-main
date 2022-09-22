@@ -26,7 +26,7 @@ const RepoPage = ({ repos }: Props) => {
 
       axios
         .get(
-          `https://raw.githubusercontent.com/josemourinho333/scraps/master/README.MD`
+          `https://raw.githubusercontent.com/${repo[0].full_name}/master/README.md`
         )
         .then((res) => {
           const newRepoObj = {
@@ -36,8 +36,19 @@ const RepoPage = ({ repos }: Props) => {
 
           setRepoPage(newRepoObj);
         })
-        /* eslint-disable-next-line no-console */
-        .catch((err) => console.log('err', err));
+        .catch((err) => {
+          if (err.response.status === 404) {
+            const newRepoObj = {
+              ...repo[0],
+              readMe: '',
+            };
+
+            setRepoPage(newRepoObj);
+          } else {
+            /* eslint-disable-next-line no-console */
+            console.log('err', err);
+          }
+        });
     }
   }, [repos, id, name]);
 
@@ -59,13 +70,14 @@ const RepoPage = ({ repos }: Props) => {
             Author: {repoPage.owner.login}
           </div>
           <div className="commit-message mx-2">
-            Message: json file doesn't have this key
+            Message:{' '}
+            {!repoPage.message ? 'No message available' : repoPage.message}
           </div>
         </div>
         <div className="divider">README.md</div>
 
         <div className="read-me whitespace-pre-wrap text-left">
-          {repoPage.readMe}
+          {repoPage.readMe ? repoPage.readMe : 'No README.md for this repo'}
         </div>
       </div>
     </div>
