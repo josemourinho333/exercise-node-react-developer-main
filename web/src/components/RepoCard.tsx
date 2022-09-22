@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from './Button';
+import moment from 'moment';
 
 interface Props {
   name: string;
@@ -34,7 +35,7 @@ const repoCard = ({
             sortByLang={sortByLang}
           />
         </div>
-        <p>{creationDate}</p>
+        <p>{moment(creationDate).format('LLL')}</p>
       </div>
     </div>
   );

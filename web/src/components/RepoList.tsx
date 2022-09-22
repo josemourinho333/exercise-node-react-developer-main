@@ -15,6 +15,9 @@ const repoList = ({ repos, sortBy, sortByLang }: Props) => {
       }
       return repo.language === sortBy;
     })
+    .sort((a, b) => {
+      return (new Date(b.created_at) as any) - (new Date(a.created_at) as any);
+    })
     .map((repo, index) => {
       return (
         <RepoCard
